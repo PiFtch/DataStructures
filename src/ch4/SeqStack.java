@@ -1,6 +1,6 @@
 
 package ch4;
-import 
+import ch2.SinglyList;
 
 public final class SeqStack<T> {
 	private Seq
