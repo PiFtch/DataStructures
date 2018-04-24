@@ -2,7 +2,8 @@ package ch3;
 
 public class MyString implements Comparable<MyString>, java.io.Serializable {
 	private final char[] value;
-	private Object SinglyList;
+	//private Object SinglyList;
+	
 	public MyString() {		//构造空串
 		this.value = new char[0];
 	}
@@ -75,8 +76,53 @@ public class MyString implements Comparable<MyString>, java.io.Serializable {
 		return substring(begin, this.value.length);
 	}
 	
+	// 连接串
+	// 返回this与str连接生成的串，若str == null，则插入"null"
+	public MyString concat(MyString str) {
+		if (str == null) {
+			str = new MyString("null");
+		}
+		char[] buffer = new char[this.value.length + str.length()];
+		int i;
+		for (i = 0; i < this.value.length; i++)
+			buffer[i] = this.value[i];
+		for (int j = 0; j < str.value.length; j++)
+			buffer[i + j] = str.value[j];
+		return new MyString(buffer);			// 以字符数组构造串对象
+	}
+	
+	// 返回当前串删除所有空格的字符串
+	public MyString trim() {
+		// buffer用来存储去掉空格的字符数组
+		char[] buffer = new char[this.value.length];
+		System.out.println("buffer size: " + buffer.length);
+		int i, j;
+		for (i = 0, j = 0; i < this.value.length; i++) {
+			if (this.value[i] != ' ') {
+				buffer[j] = this.value[i];
+				j++;
+			}
+		}
+		return new MyString(buffer, 0, j);
+	}
+	
+	// 比较串相等
+
+	// 插入串
+	// 在i处插入str
+	public MyString insert(int i, MyString str) {
+		/*
+		MyString temp = this.substring(0, i);
+		temp.concat(str);
+		temp.concat(this.substring(i));
+		return temp;
+		*/
+		MyString s1 = this.substring(0, i);
+		MyString s2 = this.substring(i);
+		return s1.concat(str).concat(s2);
+	}
 	// 统计串中各字符出现次数
-	public void countChar() {
+//	public void countChar() {
 //		char[] ch = new char[this.value.length];
 //		int[] num;
 //		
@@ -89,12 +135,12 @@ public class MyString implements Comparable<MyString>, java.io.Serializable {
 //			
 //		}
 		
-		if (this.value.length == 0)
+/*		if (this.value.length == 0)
 			return;
 		else
 			SinglyList<char> ch = new SinglyNode(this.value[0], null);
 		
-	}
+	} */
 	
 	public int countChar(char ch) {
 		int num = 0;
@@ -114,10 +160,12 @@ public class MyString implements Comparable<MyString>, java.io.Serializable {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MyString str1 = new MyString("abc");
-		MyString str2 = new MyString("abcdefg");
+		MyString str2 = new MyString("abc de  f g");
 		MyString str3 = new MyString(str2.value, 3, 2);
 		System.out.println(str1.compareTo(str1));
 		System.out.println(str1.compareTo(str3));
+		System.out.println(str2.trim());
+		System.out.println(str2.trim().insert(1, str1));
 	}
 
 
