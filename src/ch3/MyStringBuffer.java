@@ -93,11 +93,27 @@ public final class MyStringBuffer {
 	public MyStringBuffer append(String str) {
 		return this.insert(this.n, str);
 	}
+	
+	// É¾³ýbeginÖÁend-1µÄ×Ó´®
+	public MyStringBuffer delete(int begin, int end) {
+		if (begin >= 0 && begin < this.n && end >= 0 && begin <= end) {
+			if (end > this.n)
+				end = this.n;
+			for (int i = begin; i < end; i++) {
+				this.value[i] = this.value[i + (end - begin)];
+			}
+			this.n -= (end - begin);
+			return this;
+		} else
+			throw new StringIndexOutOfBoundsException("begin="+begin+", end=" + end + "end-begin=" + (end-begin));
+		
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MyStringBuffer sbuf1 = new MyStringBuffer("hello");
 		MyStringBuffer sbuf2 = new MyStringBuffer("world");
-		System.out.println(sbuf1.append(" ").append("world").insert(3, false).insert(2, sbuf2));
+		System.out.println(sbuf1.append(" ").append("world").insert(2, sbuf2));
+		System.out.println(sbuf1);
 	}
 
 }

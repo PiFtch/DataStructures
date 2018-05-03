@@ -42,7 +42,7 @@ public class MyString implements Comparable<MyString>, java.io.Serializable {
 		return new String(this.value);
 	}
 	
-	public char cahrAt(int i) {				// 返回第i个字符
+	public char charAt(int i) {				// 返回第i个字符
 		if (i >= 0 && i < this.value.length)
 			return this.value[i];
 		throw new StringIndexOutOfBoundsException(i);
@@ -149,6 +149,20 @@ public class MyString implements Comparable<MyString>, java.io.Serializable {
 				num++;
 		}
 		return num;
+	}
+	
+	public boolean equals(MyString str) {
+		if (this.value.length != str.value.length)
+			return false;
+		int i = 0;
+		while (i < this.value.length) {
+			if (this.value[i] != str.value[i])
+				return false;
+			i++;
+		}
+		if (i == this.value.length)
+			return true;
+		return false;
 	}
 	
 	public int contains(char ch) {	// 返回ch的位置，查找失败返回-1

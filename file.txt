@@ -1,0 +1,3 @@
+I am piftch.
+this is a test file for my wordcount program.
+piftch the the

@@ -21,3 +21,5 @@ public class SinglyNode<T> {
 			return this.data.toString();
 		}
 }
+
+

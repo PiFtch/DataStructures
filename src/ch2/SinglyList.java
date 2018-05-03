@@ -1,12 +1,12 @@
 package ch2;
-import javax.swing.plaf.synth.SynthStyle;
+//import javax.swing.plaf.synth.SynthStyle;
 
 public class SinglyList<T> {
 	public SinglyNode<T> head;
 	//******************************************构造方法******************************
 	// 构造空单链表
 	public SinglyList() {
-		this.head = new SinglyNode();
+		this.head = new SinglyNode<T>();
 	}
 	
 	// 由数组构造单链表
@@ -14,7 +14,7 @@ public class SinglyList<T> {
 		this();							// 先构造空单链表，有一个头结点
 		SinglyNode<T> p = this.head;
 		for (int i = 0; i < values.length; i++) {
-			p.next = new SinglyNode(values[i], null);
+			p.next = new SinglyNode<T>(values[i], null);
 			p = p.next;
 		}
 	}
@@ -25,7 +25,7 @@ public class SinglyList<T> {
 		SinglyNode<T> pthis = this.head;
 		SinglyNode<T> plist = list.head.next;
 		while (plist != null) {
-			pthis.next = new SinglyNode(plist.data, plist.next);
+			pthis.next = new SinglyNode<T>(plist.data, plist.next);
 			plist = plist.next;
 			pthis = pthis.next;
 		}
@@ -250,9 +250,9 @@ public class SinglyList<T> {
 //		list1 = new SinglyList<>(list2);
 //		System.out.println(list1.toString());
 //	
-//		System.out.println(list2.equals(list1));
+		System.out.println(list2.equals(list1));
 		
-		list2 = list1.subList(9, 12);
+//		list2 = list1.subList(1, 3);
 		list2 = list1.remove(3, 5);
 		System.out.println(list2);
 		System.out.println(list1);

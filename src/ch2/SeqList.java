@@ -23,6 +23,18 @@ public class SeqList<T> extends Object {
 		return this.n == 0;
 	}
 	
+	public T remove(int i) {	// 删除第i个元素，0<=i<n，返回被删除元素。若i越界，返回null
+		if (this.n > 0 && i >= 0 && i < this.n) {
+			T old = (T)this.element[i];
+			for (int j = i; j < this.n - 1; j++)
+				this.element[j] = this.element[j+1];
+			this.element[this.n-1] = null;
+			this.n--;
+			return old;
+		}
+		return null;
+	}
+	
 	public int size() {
 		return this.n;
 	}

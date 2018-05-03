@@ -64,7 +64,7 @@ public class CirDoublyList<T> {
 		Integer[] values = {1,2,3,4,5,6};
 		CirDoublyList<Integer> list1 = new CirDoublyList<Integer>(values);
 		System.out.println(list1.toString());
-		Integer[] att = {1,2,3,4,5,6,7};
+		Integer[] att = {3,4,5,6};
 		CirDoublyList<Integer> list2 = new CirDoublyList<Integer>(att);
 		System.out.println(list1.contains(list2));
 	}

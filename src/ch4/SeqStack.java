@@ -29,7 +29,7 @@ public final class SeqStack<T> implements Stack<T> {
 	
 	// ³öÕ»
 	public T pop() {
-		return list.remo
+		return this.list.remove(list.size() - 1);
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
