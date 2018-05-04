@@ -185,7 +185,7 @@ public class GenList<T> {
 		GenList<Integer> list2 = new GenList<Integer>(values);
 		GenList<Integer> list3 = new GenList<Integer>(values);
 		list2.insert(2, list3);
-		System.out.println(list2);
+		System.out.println(list2);	
 		System.out.println(list.equals(list2));
 		Integer x = new Integer(10);
 		list.insert(2, x);
