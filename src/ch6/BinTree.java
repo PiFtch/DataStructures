@@ -9,11 +9,64 @@ public class BinTree<T> implements BinaryTree<T> {
 		this.root = null;
 	}
 	
+	public BinTree(BinaryNode<T> root) {
+		this.root = root;
+	}
+	
+	// Construct BinaryTree using a preOrder sequence with empty flag '^'
+	public BinTree(T[] preList) {
+		this.root = create(preList);
+	}
+	private int i = 0;
+	private BinaryNode<T> create(T[] preList) {
+		BinaryNode<T> p = null;
+		if (i < preList.length) {
+			T element = preList[i];
+			i++;
+			if (element != null) {
+				p = new BinaryNode<T>(element);
+				p.left = create(preList);
+				p.right = create(preList);
+			}
+		}
+		return p;
+	}
+	
+	public BinTree(BinTree<T> bintree) {
+		this.root = copy(bintree.root);
+	}
+	
+	public BinaryNode<T> copy(BinaryNode<T> p) {
+		if (p == null)
+			return null;
+		BinaryNode<T> node = new BinaryNode<T>(p.data);
+		node.left = copy(p.left);
+		node.right = copy(p.right);
+		return node;
+	}
+
 	// End of Constructors **************************************
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		String[] preList = {"A","B","D",null,"G",null,null,null,"C","E",null,null,"F","H"};
+		BinTree<String> bintree = new BinTree<>(preList);
+		System.out.println("toString: " + bintree.toString());
+		System.out.print("PreOrder: "); bintree.preOrder();
+		System.out.print("InOrder: "); bintree.inOrder();
+		System.out.print("PostOrder: "); bintree.postOrder();
+		bintree.insert(bintree.root.left, "X", true);
+		bintree.insert(bintree.root.right, "Y", false);
+		bintree.insert("Z");
+		System.out.println("toSrring: " + bintree.toString());
+		System.out.print("PreOrder: "); bintree.preOrder();
+		System.out.print("InOrder: "); bintree.inOrder();
+		System.out.print("PostOrder: "); bintree.postOrder();
+		BinTree<String> tree2 = new BinTree<String>(bintree);
+		System.out.println("toSrring: " + tree2.toString());
+		System.out.print("PreOrder: "); tree2.preOrder();
+		System.out.print("InOrder: "); tree2.inOrder();
+		System.out.print("PostOrder: "); tree2.postOrder();
 	}
 
 	@Override
@@ -58,7 +111,7 @@ public class BinTree<T> implements BinaryTree<T> {
 	
 	private void preOrder(BinaryNode<T> p) {
 		if (p != null) {
-			System.out.println(p.data.toString() + " ");
+			System.out.print(p.data.toString() + " ");
 			preOrder(p.left);
 			preOrder(p.right);
 		}
@@ -77,6 +130,7 @@ public class BinTree<T> implements BinaryTree<T> {
 	public void inOrder() {
 		// TODO Auto-generated method stub
 		inOrder(this.root);
+		System.out.println();
 	}
 	
 	private void inOrder(BinaryNode<T> p) {
@@ -105,6 +159,10 @@ public class BinTree<T> implements BinaryTree<T> {
 	@Override
 	public void levelOrder() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	private void levelOrder(BinaryNode<T> left, BinaryNode<T> right) {
 		
 	}
 
@@ -143,15 +201,21 @@ public class BinTree<T> implements BinaryTree<T> {
 	}
 
 	@Override
-	// return the node lies in the lowest level
+	// return the node with key, if this tree does not contain such a node, return null
 	public BinaryNode<T> search(T key) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		return search(this.root, key);
 	}
 	
 	private BinaryNode<T> search(BinaryNode<T> p, T key) {
-		return null;
+		if (p == null)
+			return null;
+		if (p.data == key)
+			return p;
+		BinaryNode<T> left = search(p.left, key);
+		if (left != null)
+			return left;
+		return search(p.right, key);
 	}
 
 	@Override
