@@ -1,5 +1,6 @@
 package ch6;
-
+import ch4.SeqStack;
+import ch4.Stack;
 public class BinTree<T> implements BinaryTree<T> {
 	
 	public BinaryNode<T> root;
@@ -62,11 +63,24 @@ public class BinTree<T> implements BinaryTree<T> {
 		System.out.print("PreOrder: "); bintree.preOrder();
 		System.out.print("InOrder: "); bintree.inOrder();
 		System.out.print("PostOrder: "); bintree.postOrder();
+		
+		// copy
 		BinTree<String> tree2 = new BinTree<String>(bintree);
 		System.out.println("toSrring: " + tree2.toString());
 		System.out.print("PreOrder: "); tree2.preOrder();
 		System.out.print("InOrder: "); tree2.inOrder();
 		System.out.print("PostOrder: "); tree2.postOrder();
+		System.out.println("\n");
+		tree2.printGenList();
+		
+		// Test level()
+		System.out.println("\n" + tree2.level("X"));
+		// search
+		System.out.println(tree2.search("k"));
+		// preOrderIterative
+		tree2.preOrderIterative();
+		// post
+		tree2.postOrderIterative();
 	}
 
 	@Override
@@ -116,7 +130,75 @@ public class BinTree<T> implements BinaryTree<T> {
 			preOrder(p.right);
 		}
 	}
+	
+	// preOrder -- iterative method
+	public void preOrderIterative() {
+		Stack<BinaryNode<T>> stack = new SeqStack<BinaryNode<T>>();
+		BinaryNode<T> p = this.root;
+		while (true) {
+			preOrderIterative(p, stack);
+			if (stack.isEmpty())
+				break;
+			p = stack.pop();
+		}
+	}
+	private void preOrderIterative(BinaryNode<T> root, Stack<BinaryNode<T>> stack) {
+		BinaryNode<T> p = root;
+		while (p != null) {
+			System.out.print(p.data.toString()+ " ");
+			if (p.right != null) {
+				stack.push(p.right);
+			}
+			p = p.left;
+		}
+	}
+	
+	// postOrder -- iterative method
+	public void postOrderIterative() {
+		Stack<BinaryNode<T>> stack = new SeqStack<BinaryNode<T>>();
+		BinaryNode<T> p = this.root;
+		if (p != null)
+			stack.push(p);
+		while (!stack.isEmpty()) {
+			if (stack.peek().left != p && stack.peek().right != p) {
+				postOrderIterative(stack.peek(), stack);
+			}
+			p = stack.pop();
+			System.out.print(p.data.toString() + " ");
+		}
+	}
+	private void postOrderIterative(BinaryNode<T> root, Stack<BinaryNode<T>> stack) {
+		BinaryNode<T> p = root;
+		while (p != null) {
+			if (p.left != null) {
+				if (p.right != null)
+					stack.push(p.right);
+				stack.push(p.left);
+			} else if (p.right != null)
+				stack.push(p.right);
+			p = stack.peek();
+		}
+	}
 
+	// print genlist expression of binary tree
+	public void printGenList() {
+		printGenList(this.root);
+	}
+	private void printGenList(BinaryNode<T> p) {
+		if (p == null) 
+			System.out.print("^");
+		else {
+			System.out.print(p.data.toString());
+			if (p.left != null || p.right != null) {
+				System.out.print("(");
+				printGenList(p.left);
+				System.out.print(",");
+				printGenList(p.right);
+				System.out.print(")");
+			}
+		}
+	}
+	
 	public String toString() {
 		return toString(this.root);
 	}
@@ -243,14 +325,16 @@ public class BinTree<T> implements BinaryTree<T> {
 	private int level(BinaryNode<T> p, T key) {
 		if (p == null)
 			return 0;
-		if (p.data == key)
+		if (p.data.equals(key))
 			return 1;
 		int leftLevel = level(p.left, key);
 		int rightLevel = level(p.right, key);
 		if (leftLevel == 0 && rightLevel == 0)
 			return 0;
-		else
-			return 1 + (leftLevel < rightLevel ? leftLevel : rightLevel);
+		else {
+			return (leftLevel > 0 ? leftLevel : rightLevel) + 1;
+		}
+			//return 1 + (leftLevel < rightLevel ? leftLevel : rightLevel);
 	}
 	
 }

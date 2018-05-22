@@ -62,7 +62,7 @@ public class Matrix {
 						this.element[i][j] = source[i][j];
 			}
 			this.rows = m;
-			this.rows = n;
+			this.columns = n;
 		}
 		else throw new IllegalArgumentException();
 	}

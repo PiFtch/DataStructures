@@ -1,7 +1,7 @@
 package ch5;
 
 public class Triple implements Comparable<Triple>{
-	int row, column, value;
+	public int row, column, value;
 	
 	public Triple(int row, int column, int value) {
 		if (row >= 0 && column >= 0) {

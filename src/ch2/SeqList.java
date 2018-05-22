@@ -63,11 +63,13 @@ public class SeqList<T> extends Object {
 		if (i > this.n)
 			i = this.n;
 		Object[] source = this.element;
+	
 		if (this.n == element.length) {
-			this.element = new Object[source.length * 2];
-			for (int j = 0; j < i; i++)
+			this.element = new Object[source.length + 1];
+			for (int j = 0; j < i; j++)
 				this.element[j] = source[j];
 		}
+		
 		for (int j = this.n-1; j >= i; j--) {
 			this.element[j+1] = source[j];
 		}
