@@ -1,6 +1,6 @@
 package ch6;
 
-public class BinaryNode<T> {
+public class BinaryNode<T extends Comparable<? super T>> {
 	public T data;
 	public BinaryNode<T> left, right;
 	

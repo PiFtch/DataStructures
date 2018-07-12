@@ -1,6 +1,6 @@
 package ch6;
 
-public interface BinaryTree<T> {
+public interface BinaryTree<T extends Comparable<? super T>> {
 	// return if this tree is empty
 	boolean isEmpty();
 	

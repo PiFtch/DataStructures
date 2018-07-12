@@ -35,6 +35,7 @@ public class MatrixGraph<T> extends AbstractGraph<T> {
 		}
 	}
 	
+	
 	public String toString() {
 		String str = super.toString() + "邻接矩阵: \n";
 		int n = this.vertexCount();
@@ -87,6 +88,10 @@ public class MatrixGraph<T> extends AbstractGraph<T> {
 		graph.DFSTraverse(5);
 		for (int i1 = 0; i1 < graph.vertexCount(); i1++)
 			graph.BFSTraverse(i1);
+		
+		graph.minSpanTraverse();
+		
+		System.out.println("顶点3的出度为：" + graph.outdegree(3));
 	}
 
 	@Override
@@ -223,7 +228,36 @@ public class MatrixGraph<T> extends AbstractGraph<T> {
 	@Override
 	public void minSpanTraverse() {
 		// TODO Auto-generated method stub
-		
+		Triple[] mst = new Triple[this.vertexCount() - 1];		// 最小生成树的边集合，边数为顶点数-1
+		for (int i = 0; i < mst.length; i++)
+			mst[i] = new Triple(0, i + 1, this.weight(0, i + 1));	// 从结点V0到其他结点的边
+		for (int i = 0; i < mst.length; i++) {						// 每轮循环确定一条权值最小的边
+			int minWeight = mst[i].value, min = i;
+			for (int j = i + 1; j <mst.length; j++)
+				if (mst[j].value < minWeight) {
+					minWeight = mst[i].value;
+					min = j;
+				}
+			// 将权值最小的边交换到第i个元素，标识该边加入TE集合
+			Triple edge = mst[min];
+			mst[min] = mst[i];
+			mst[i] = edge;
+			// 将i+1~n-1的其他边用权值更小的边替换
+			int tv = edge.column;
+			for (int j = i+1; j < mst.length; j++) {
+				int v = mst[j].column;
+				int weight = this.weight(tv, v);
+				if (weight < mst[j].value)
+					mst[j] = new Triple(tv, v, weight);
+			}
+		}
+		System.out.print("\n最小生成树的边集合: ");
+		int mincost = 0;
+		for (int i = 0; i < mst.length; i++) {
+			System.out.print(mst[i] + " ");
+			mincost += mst[i].value;
+		}
+		System.out.println(", 最小代价为" + mincost);
 	}
 
 	@Override
@@ -236,6 +270,17 @@ public class MatrixGraph<T> extends AbstractGraph<T> {
 	public void shortestPath() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int outdegree(int i) {		// 返回顶点Vi的出度
+		if ( i < 0 || i >= this.vertexCount())
+			throw new IllegalArgumentException("Vertex index cannot go out of range [0, " + this.vertexCount() + ")");
+		int count = 0;
+		for (int j = 0; j < this.vertexCount(); j++)
+			if (this.weight(i, j) < MAX_WEIGHT && this.weight(i, j) != 0)
+				count++;
+		
+		return count;
 	}
 }
 

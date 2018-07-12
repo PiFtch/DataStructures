@@ -1,7 +1,7 @@
 package ch6;
 import ch4.SeqStack;
 import ch4.Stack;
-public class BinTree<T> implements BinaryTree<T> {
+public class BinTree<T extends Comparable<? super T>> implements BinaryTree<T> {
 	
 	public BinaryNode<T> root;
 	
@@ -65,6 +65,7 @@ public class BinTree<T> implements BinaryTree<T> {
 		System.out.print("PostOrder: "); bintree.postOrder();
 		
 		// copy
+		System.out.println("tree2: ");
 		BinTree<String> tree2 = new BinTree<String>(bintree);
 		System.out.println("toSrring: " + tree2.toString());
 		System.out.print("PreOrder: "); tree2.preOrder();
@@ -72,15 +73,33 @@ public class BinTree<T> implements BinaryTree<T> {
 		System.out.print("PostOrder: "); tree2.postOrder();
 		System.out.println("\n");
 		tree2.printGenList();
-		
+		System.out.println();
+		tree2.insert("KK");
+		System.out.print("InOrder: "); tree2.inOrder();
+
+		/*
 		// Test level()
 		System.out.println("\n" + tree2.level("X"));
 		// search
 		System.out.println(tree2.search("k"));
+		*/
 		// preOrderIterative
 		tree2.preOrderIterative();
+		System.out.print("PostOrderIterative: "); bintree.postOrderIterative();
+		/*
 		// post
 		tree2.postOrderIterative();
+		*/
+		System.out.println(bintree.isSorted(bintree));
+		
+		BinTree<Integer> tree = new BinTree<Integer>();
+		tree.insert(5);
+		tree.insert(10);
+		System.out.println(tree.isSorted(tree));
+		tree.insert(tree.root, 89, false);
+		System.out.println(tree.isSorted(tree));
+		tree.insert(tree.root.right, 20, false);
+		System.out.println(tree.isSorted(tree));
 	}
 
 	@Override
@@ -154,6 +173,7 @@ public class BinTree<T> implements BinaryTree<T> {
 	}
 	
 	// postOrder -- iterative method
+	/*
 	public void postOrderIterative() {
 		Stack<BinaryNode<T>> stack = new SeqStack<BinaryNode<T>>();
 		BinaryNode<T> p = this.root;
@@ -167,6 +187,8 @@ public class BinTree<T> implements BinaryTree<T> {
 			System.out.print(p.data.toString() + " ");
 		}
 	}
+	*/
+	/*
 	private void postOrderIterative(BinaryNode<T> root, Stack<BinaryNode<T>> stack) {
 		BinaryNode<T> p = root;
 		while (p != null) {
@@ -177,6 +199,34 @@ public class BinTree<T> implements BinaryTree<T> {
 			} else if (p.right != null)
 				stack.push(p.right);
 			p = stack.peek();
+		}
+	}
+	*/
+	
+	public void postOrderIterative() {
+		this.postOrderIterative(this.root);
+	}
+	private void postOrderIterative(BinaryNode<T> root) {
+		if (root == null)
+			return;
+		Stack<BinaryNode<T>> stack = new SeqStack<BinaryNode<T>>();
+		BinaryNode<T> current = null;
+		BinaryNode<T> pre = null;
+		stack.push(root);
+		while (!stack.isEmpty()) {
+			current = stack.peek();
+			if ((current.left == null && current.right == null) || (pre != null && (pre == current.left || pre == current.right))) {
+				System.out.print(current.data + " ");
+				stack.pop();
+				pre = current;
+			} else {
+				if (current.right != null) {
+					stack.push(current.right);
+				}
+				if (current.left != null) {
+					stack.push(current.left);
+				}
+			}
 		}
 	}
 
@@ -337,4 +387,17 @@ public class BinTree<T> implements BinaryTree<T> {
 			//return 1 + (leftLevel < rightLevel ? leftLevel : rightLevel);
 	}
 	
+	public <T extends Comparable<? super T>> boolean isSorted(BinaryTree<T> tree) {	// ÅÐ¶ÏÊÇ·ñÎª¶þ²æÅÅÐòÊ÷
+		return isSorted(this.root);
+	}
+
+	private <T extends Comparable<? super T>> boolean isSorted(BinaryNode<T> root) {
+		if (root == null)
+			return true;
+		if ((root.left == null || root.left != null && root.left.data.compareTo(root.data) < 0)
+			 && (root.right == null || root.right != null && root.right.data.compareTo(root.data) > 0)) {
+			return isSorted(root.left) && isSorted(root.right);
+		}
+		return false;
+	}
 }

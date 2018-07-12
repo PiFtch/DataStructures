@@ -82,9 +82,10 @@ public class SinglyList<T> {
 		SinglyNode<T> p = this.head.next;
 		while (p != null && p.data != key)
 			p = p.next;
-		if (p.data == key)
-			return p;
-		return null;
+//		if (p.data == key)
+//			return p;
+//		return null;
+		return p;
 	}
 	
 	// 判断是否包含关键字为key的元素
@@ -221,11 +222,15 @@ public class SinglyList<T> {
 	
 	public String toString() {
 		SinglyNode<T> p = this.head.next;
+		SinglyNode<T> pre = this.head;
 		String str = this.getClass().getName() + "(";
 		while (p != null) {
 			str += p.toString() + (p.next == null ? ")" : ",");
 			p = p.next;
+			pre = pre.next;
 		}
+		if (pre == this.head)
+			str += ")";
 		return str;
 	}
 	
